@@ -1,17 +1,17 @@
 from flask import Flask
-from flask_restful import Api
-from flask_jwt_extended import JWTManager
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 app = Flask(__name__)
-api = Api(app)
-jwt = JWTManager(app)
 
-# Load configuration
-app.config.from_pyfile('config.py')
 
 # MongoDB connection
-client = MongoClient(app.config["MONGO_URI"])
+mongo_uri = os.getenv("MONGO_URI")
+client = MongoClient(mongo_uri)
 db = client["Cinematch-app_db"]  
 
 # Import routes
