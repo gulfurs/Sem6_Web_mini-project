@@ -1,0 +1,12 @@
+[{
+  "_id": {
+    "$oid": "67a33337fbd651c68312aa52"
+  },
+  "title": "Inception",
+  "genre": [
+    "Sci-Fi",
+    "Thriller"
+  ],
+  "release_year": 2010,
+  "description": "A thief who enters the dreams of others to steal secrets."
+}]
