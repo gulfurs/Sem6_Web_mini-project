@@ -14,15 +14,20 @@ const HomePage = () => {
 
   return (
     <div className="container">
+      <div className= "top-bar sign-in">
+        <p>Register to get started.</p>
+        <Link to="/register" className="btn">Register</Link>
+      </div>
       <h1>Welcome to the Movie Recommendation Engine</h1>
       <p>Explore movies, join groups, and get personalized recommendations!</p>
+
       <nav>
         <Link to="/user-profile" className="btn">User Profile</Link>
         <Link to="/groups" className="btn">Groups</Link>
         <Link to="/group-join" className="btn">Join a Group</Link>
         <Link to="/movie-rating" className="btn">Rate Movies</Link>
       </nav>
-
+  
       <h2>Movies</h2>
       <ul>
         {movies.map(movie =>(

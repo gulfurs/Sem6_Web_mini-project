@@ -7,8 +7,10 @@ const MovieRating = () => {
       <h1>Rate Movies</h1>
       <p>Browse movies and give them your ratings.</p>
       {/* Add movie list and rating functionality */}
+      
     </div>
   );
 };
 
 export default MovieRating;
+
