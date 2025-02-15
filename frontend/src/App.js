@@ -8,6 +8,7 @@ import GroupJoin from "./pages/GroupJoin";
 import MovieRating from "./pages/MovieRating";
 
 import Register from "./components/Register";
+import Login from "./components/login";
 
 import "./styles.css";
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/group-join" element={<GroupJoin />} />
         <Route path="/movie-rating" element={<MovieRating />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );

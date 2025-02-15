@@ -15,7 +15,7 @@ const HomePage = () => {
   return (
     <div className="container">
       <div className= "top-bar sign-in">
-        <p>Register to get started.</p>
+        <Link to="/login" className="btn">Login</Link>
         <Link to="/register" className="btn">Register</Link>
       </div>
       <h1>Welcome to the Movie Recommendation Engine</h1>

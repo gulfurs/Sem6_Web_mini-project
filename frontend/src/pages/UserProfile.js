@@ -6,7 +6,7 @@ const UserProfile = () => {
     <div className="container">
       <h1>User Profile</h1>
       <p>Your personalized movie recommendations will appear here.</p>
-      {/* Add user info and recommendations */}
+      <p>Username: {localStorage.getItem("username")}</p>
     </div>
   );
 };

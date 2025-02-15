@@ -36,3 +36,21 @@ def register():
     users.insert_one({"username": username, "password": hashed_password})
 
     return jsonify({"message": "User created successfully"}), 201
+
+@app.route("/api/login", methods=["POST"])
+def login():
+    data = request.get_json()
+    username = data["username"]
+    password = data["password"]
+
+    if not username or not password:
+        return jsonify({"error": "Invalid username or password"}), 400
+
+    users = db.users
+    user = users.find_one({"username": username})
+
+    if not user or not check_password_hash(user["password"], password):
+        return jsonify({"error": "Invalid username or password"}), 401
+
+    return jsonify({"message": "Login successful"}), 200
+
