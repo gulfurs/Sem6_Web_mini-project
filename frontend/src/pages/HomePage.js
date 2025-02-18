@@ -34,6 +34,7 @@ const HomePage = () => {
           <li>key={movie._id}{movie.title}</li>
         ))}
       </ul>
+      <p>Username: {localStorage.getItem("username")}</p>
     </div>
   );
 };
