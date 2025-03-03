@@ -31,7 +31,7 @@ const HomePage = () => {
       <h2>Movies</h2>
       <ul>
         {movies.map(movie =>(
-          <li>key={movie._id}{movie.title}</li>
+          <li key={movie._id}>{movie.title}</li>
         ))}
       </ul>
       <p>Username: {localStorage.getItem("username")}</p>

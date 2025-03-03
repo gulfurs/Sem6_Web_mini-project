@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
 import UserProfile from "./pages/UserProfile";
@@ -13,17 +13,112 @@ import Login from "./components/login";
 import "./styles.css";
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const checkLoginStatus = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:5000/api/me", { 
+          credentials: "include" 
+        });
+        const data = await res.json();
+        
+        if (res.ok && data.user) {
+          setUser(data.user);
+        }
+      } catch (error) {
+        console.error("Error checking login status:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    checkLoginStatus();
+  }, []);
+  
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("http://127.0.0.1:5000/api/logout", { 
+        method: "POST", 
+        credentials: "include" 
+      });
+      
+      if (res.ok) {
+        setUser(null);
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
+
+  // Protected route component
+  const ProtectedRoute = ({ children }) => {
+    if (loading) return <div>Loading...</div>;
+    if (!user) return <Navigate to="/login" />;
+    return children;
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/user-profile" element={<UserProfile />} />
-        <Route path="/groups" element={<Groups />} />
-        <Route path="/group-join" element={<GroupJoin />} />
-        <Route path="/movie-rating" element={<MovieRating />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+      <div className="app-container">
+        <nav className="main-nav">
+          <div className="nav-links">
+            <Link to="/">Home</Link>
+            {user && <Link to="/movie-rating">Rate Movies</Link>}
+            {user && <Link to="/user-profile">Profile</Link>}
+            {user && <Link to="/groups">Groups</Link>}
+          </div>
+          <div className="auth-section">
+            {user ? (
+              <div className="user-section">
+                <span>Welcome, {user.username}</span>
+                <button onClick={handleLogout} className="logout-btn">Logout</button>
+              </div>
+            ) : (
+              <div className="auth-links">
+                <Link to="/register">Register</Link>
+                <Link to="/login">Login</Link>
+              </div>
+            )}
+          </div>
+        </nav>
+        
+        <main className="content">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/register" element={<Register setUser={setUser} />} />
+            <Route path="/login" element={<Login setUser={setUser} />} />
+            
+            {/* Protected routes */}
+            <Route path="/user-profile" element={
+              <ProtectedRoute>
+                <UserProfile user={user} />
+              </ProtectedRoute>
+            } />
+            <Route path="/groups" element={
+              <ProtectedRoute>
+                <Groups user={user} />
+              </ProtectedRoute>
+            } />
+            <Route path="/group-join" element={
+              <ProtectedRoute>
+                <GroupJoin user={user} />
+              </ProtectedRoute>
+            } />
+            <Route path="/movie-rating" element={
+              <ProtectedRoute>
+                <MovieRating user={user} />
+              </ProtectedRoute>
+            } />
+          </Routes>
+        </main>
+      </div>
     </Router>
   );
 }
