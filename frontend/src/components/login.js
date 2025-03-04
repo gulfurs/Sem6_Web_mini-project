@@ -23,8 +23,8 @@ const Login = ({ setUser }) => {
             const data = await res.json();
             
             if (res.ok) {
-                setMessage(data.message || "Login successful!");
-                // Store user in state
+                // Display success message and store user data
+                setMessage("Login successful!");
                 setUser(data.user);
                 // Store user ID in localStorage
                 localStorage.setItem('userId', data.user.id);
@@ -48,24 +48,14 @@ const Login = ({ setUser }) => {
             <form onSubmit={handleLogin}>
                 <div className="form-group">
                     <label htmlFor="username">Username</label>
-                    <input 
-                        id="username"
-                        type="text" 
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)} 
-                        required
-                    />
+                    <input id="username" type="text" value={username} 
+                        onChange={(e) => setUsername(e.target.value)} required/>
                 </div>
                 
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
-                    <input 
-                        id="password"
-                        type="password" 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)} 
-                        required
-                    />
+                    <input id="password" type="password" value={password}
+                        onChange={(e) => setPassword(e.target.value)} required/>
                 </div>
                 
                 <button type="submit" disabled={isLoading}>

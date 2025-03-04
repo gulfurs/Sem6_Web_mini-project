@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
 
+//Page imports
 import HomePage from "./pages/HomePage";
 import UserProfile from "./pages/UserProfile";
 import Groups from "./pages/Groups";
@@ -16,13 +17,12 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Check if user is logged in
   useEffect(() => {
-    // Check if user is already logged in
     const checkLoginStatus = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:5000/api/me", { 
-          credentials: "include" 
-        });
+        const res = await fetch("http://127.0.0.1:5000/api/me", { credentials: "include"}
+          );
         const data = await res.json();
         
         if (res.ok && data.user) {
@@ -32,25 +32,15 @@ function App() {
         console.error("Error checking login status:", error);
       } finally {
         setLoading(false);
-      }
-    };
-    
+      }};
+
     checkLoginStatus();
   }, []);
   
-  const handleLogout = async () => {
-    try {
-      const res = await fetch("http://127.0.0.1:5000/api/logout", { 
-        method: "POST", 
-        credentials: "include" 
-      });
-      
-      if (res.ok) {
-        setUser(null);
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
+  const handleLogout = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    setUser(null);
   };
 
   // Protected route component
@@ -59,7 +49,6 @@ function App() {
     if (!user) return <Navigate to="/login" />;
     return children;
   };
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -94,27 +83,18 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/register" element={<Register setUser={setUser} />} />
             <Route path="/login" element={<Login setUser={setUser} />} />
-            
-            {/* Protected routes */}
+
             <Route path="/user-profile" element={
-              <ProtectedRoute>
-                <UserProfile user={user} />
-              </ProtectedRoute>
+              <ProtectedRoute><UserProfile user={user} /> </ProtectedRoute>
             } />
             <Route path="/groups" element={
-              <ProtectedRoute>
-                <Groups user={user} />
-              </ProtectedRoute>
+              <ProtectedRoute><Groups user={user} /></ProtectedRoute>
             } />
             <Route path="/group-join" element={
-              <ProtectedRoute>
-                <GroupJoin user={user} />
-              </ProtectedRoute>
+              <ProtectedRoute><GroupJoin user={user} /></ProtectedRoute>
             } />
             <Route path="/movie-rating" element={
-              <ProtectedRoute>
-                <MovieRating user={user} />
-              </ProtectedRoute>
+              <ProtectedRoute><MovieRating user={user} /></ProtectedRoute>
             } />
           </Routes>
         </main>

@@ -24,8 +24,10 @@ const Register = ({ setUser }) => {
       const data = await response.json();
       
       if (response.ok) {
-        setMessage(data.message || "Registration successful!");
+        setMessage("Registration successful!");
         setUser(data.user);
+        localStorage.setItem('userId', data.user.id);
+        localStorage.setItem('username', data.user.username);
         // Redirect to home page after successful registration
         setTimeout(() => navigate("/"), 1500);
       } else {
@@ -33,7 +35,6 @@ const Register = ({ setUser }) => {
       }
     } catch (error) {
       setMessage("Error connecting to server");
-      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -45,24 +46,14 @@ const Register = ({ setUser }) => {
       <form onSubmit={handleRegister}>
         <div className="form-group">
           <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+          <input id="username" type="text" value={username}
+            onChange={(e) => setUsername(e.target.value)} required />
         </div>
         
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <input id="password" type="password" value={password}
+            onChange={(e) => setPassword(e.target.value)} required />
         </div>
         
         <button type="submit" disabled={isLoading}>
