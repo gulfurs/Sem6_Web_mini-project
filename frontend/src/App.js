@@ -12,6 +12,7 @@ import Register from "./components/Register";
 import Login from "./components/login";
 
 import "./styles.css";
+import "./navbarstyle.css"
 
 function App() {
   const [user, setUser] = useState(null);
@@ -57,11 +58,12 @@ function App() {
     <Router>
       <div className="app-container">
         <nav className="main-nav">
+        <Link to="/" className="nav-logo">Cinematch</Link>
           <div className="nav-links">
             <Link to="/">Home</Link>
             {user && <Link to="/movie-rating">Rate Movies</Link>}
-            {user && <Link to="/user-profile">Profile</Link>}
             {user && <Link to="/groups">Groups</Link>}
+            {user && <Link to="/user-profile">User-Profile</Link>}
           </div>
           <div className="auth-section">
             {user ? (
@@ -85,17 +87,16 @@ function App() {
             <Route path="/login" element={<Login setUser={setUser} />} />
 
             <Route path="/user-profile" element={
-              <ProtectedRoute><UserProfile user={user} /> </ProtectedRoute>
-            } />
+              <ProtectedRoute><UserProfile user={user} /> </ProtectedRoute> } />
+
             <Route path="/groups" element={
-              <ProtectedRoute><Groups user={user} /></ProtectedRoute>
-            } />
+              <ProtectedRoute><Groups user={user} /></ProtectedRoute> } />
+            
             <Route path="/group-join" element={
-              <ProtectedRoute><GroupJoin user={user} /></ProtectedRoute>
-            } />
+              <ProtectedRoute><GroupJoin user={user} /></ProtectedRoute> } />
+            
             <Route path="/movie-rating" element={
-              <ProtectedRoute><MovieRating user={user} /></ProtectedRoute>
-            } />
+              <ProtectedRoute><MovieRating user={user} /></ProtectedRoute>} />
           </Routes>
         </main>
       </div>
