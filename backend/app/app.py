@@ -260,51 +260,6 @@ def get_movie(movie_id):
         print(f"Error getting movie: {str(e)}")
         return jsonify({"error": "An error occurred while retrieving the movie"}), 500
 
-# Add a route to populate the database with some sample movies if needed
-@app.route("/api/seed-movies", methods=["POST"])
-def seed_movies():
-    if db.movies.count_documents({}) > 0:
-        return jsonify({"message": "Movies already exist in the database"}), 200
-    
-    sample_movies = [
-        {
-            "title": "Inception",
-            "genre": ["Science Fiction", "Action"],
-            "release_year": 2010,
-            "description": "A thief who enters the dreams of others to steal secrets."
-        },
-        {
-            "title": "The Shawshank Redemption",
-            "genre": ["Drama"],
-            "release_year": 1994,
-            "description": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency."
-        },
-        {
-            "title": "The Dark Knight",
-            "genre": ["Action", "Crime", "Drama"],
-            "release_year": 2008,
-            "description": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice."
-        },
-        {
-            "title": "Pulp Fiction",
-            "genre": ["Crime", "Drama"],
-            "release_year": 1994,
-            "description": "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption."
-        },
-        {
-            "title": "The Matrix",
-            "genre": ["Action", "Science Fiction"],
-            "release_year": 1999,
-            "description": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers."
-        }
-    ]
-    
-    try:
-        db.movies.insert_many(sample_movies)
-        return jsonify({"message": "Sample movies added to the database"}), 201
-    except Exception as e:
-        print(f"Error seeding movies: {str(e)}")
-        return jsonify({"error": "An error occurred while seeding the database"}), 500
 
 
 if __name__ == "__main__":
