@@ -63,7 +63,9 @@ function App() {
             <Link to="/">Home</Link>
             {user && <Link to="/movie-rating">Rate Movies</Link>}
             {user && <Link to="/groups">Groups</Link>}
+            {user && <Link to="/group-join">Join a Group</Link>}
             {user && <Link to="/user-profile">User-Profile</Link>}
+
           </div>
           <div className="auth-section">
             {user ? (
