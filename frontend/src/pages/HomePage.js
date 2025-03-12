@@ -4,7 +4,6 @@ import "../styles.css";
 import "../home.css"
 
 const HomePage = () => {
-  // const [users, setUsers] = useState([]); 
   const [movies, setMovies] = useState([]);
   const username = localStorage.getItem("username");
 
@@ -21,13 +20,6 @@ const HomePage = () => {
         <p>Very cool, you can even login ! :O</p>
       </div>
       {username && <p className="welcome-message">Welcome back, {username}!</p>}
-  
-      {/* <div className="feature-nav">
-        <Link to="/user-profile" className="btn">User Profile</Link>
-        <Link to="/groups" className="btn">Groups</Link>
-        <Link to="/group-join" className="btn">Join a Group</Link>
-        <Link to="/movie-rating" className="btn">Rate Movies</Link>
-      </div> */}
   
       <div className="section-title">
         <h2>Movies</h2>

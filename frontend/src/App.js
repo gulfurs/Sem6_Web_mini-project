@@ -16,26 +16,16 @@ import "./navbarstyle.css"
 
 function App() {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   // Check if user is logged in
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const res = await fetch("http://127.0.0.1:5000/api/me", { credentials: "include"}
-          );
-        const data = await res.json();
-        
-        if (res.ok && data.user) {
-          setUser(data.user);
-        }
-      } catch (error) {
-        console.error("Error checking login status:", error);
-      } finally {
-        setLoading(false);
-      }};
-
-    checkLoginStatus();
+    // Get user data from localStorage
+    const userId = localStorage.getItem('userId');
+    const username = localStorage.getItem('username');
+    
+    if (userId && username) {
+      setUser({ id: userId, username });
+    }
   }, []);
   
   const handleLogout = () => {
@@ -46,13 +36,8 @@ function App() {
 
   // Protected route component
   const ProtectedRoute = ({ children }) => {
-    if (loading) return <div>Loading...</div>;
-    if (!user) return <Navigate to="/login" />;
-    return children;
+    return user ? children : <Navigate to="/login" />;
   };
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <Router>

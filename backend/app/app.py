@@ -240,7 +240,6 @@ def rate_movie():
             return jsonify({"message": "Rating added successfully"}), 201
     
     except Exception as e:
-        print(f"Error rating movie: {str(e)}")
         return jsonify({"error": "An error occurred while processing your request"}), 500
 
 # Add a route to get a single movie's details
@@ -257,7 +256,6 @@ def get_movie(movie_id):
         return jsonify(movie), 200
     
     except Exception as e:
-        print(f"Error getting movie: {str(e)}")
         return jsonify({"error": "An error occurred while retrieving the movie"}), 500
 
 

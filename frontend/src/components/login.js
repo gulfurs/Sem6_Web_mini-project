@@ -29,7 +29,6 @@ const Login = ({ setUser }) => {
                 // Store user ID in localStorage
                 localStorage.setItem('userId', data.user.id);
                 localStorage.setItem('username', data.user.username);
-                // Redirect to home page after successful login
                 setTimeout(() => navigate("/"), 1500);
             } else {
                 setMessage(data.error || "Login failed");

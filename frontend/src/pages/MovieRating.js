@@ -4,50 +4,35 @@ import "../movieratestyle.css";
 const MovieRating = () => {
     const [movies, setMovies] = useState([]);
     const [userRatings, setUserRatings] = useState({});
-    const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('');
-    const [error, setError] = useState('');
     const userId = localStorage.getItem('userId');
 
     // Fetch both movies and ratings in parallel
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Fetch movies
-                const moviesResponse = await fetch('http://127.0.0.1:5000/api/movies');
-                
-                if (!moviesResponse.ok) {
-                    throw new Error('Failed to fetch movies');
-                }
-                
-                const moviesData = await moviesResponse.json();
-                setMovies(moviesData);
-                
-                // Only fetch ratings if user is logged in
-                if (userId) {
-                    const ratingsResponse = await fetch('http://127.0.0.1:5000/api/ratings', {
-                        headers: { 'Authorization': `Bearer ${userId}` }
-                    });
-                    
-                    if (ratingsResponse.ok) {
-                        const data = await ratingsResponse.json();
-                        // Convert array to object
-                        const ratingsObj = {};
-                        data.ratings.forEach(rating => {
-                            ratingsObj[rating.movie_id] = rating.rating;
-                        });
-                        setUserRatings(ratingsObj);
-                    }
-                }
-            } catch (err) {
-                setError('Failed to load content. Please try again later.');
-                console.error('Error:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
+        // Fetch movies
+        fetch('http://127.0.0.1:5000/api/movies')
+            .then(response => response.json())
+            .then(data => setMovies(data))
+            .catch(err => console.error('Error fetching movies:', err));
         
-        fetchData();
+        // Fetch user ratings if logged in
+        if (userId) {
+            fetch('http://127.0.0.1:5000/api/ratings', {
+                headers: { 'Authorization': `Bearer ${userId}` }
+            })
+            .then(response => {
+                if (response.ok) return response.json();
+                return { ratings: [] };
+            })
+            .then(data => {
+                const ratingsObj = {};
+                data.ratings.forEach(rating => {
+                    ratingsObj[rating.movie_id] = rating.rating;
+                });
+                setUserRatings(ratingsObj);
+            })
+            .catch(err => console.error('Error fetching ratings:', err));
+        }
     }, [userId]);
 
     const handleRatingChange = async (movieId, rating) => {
@@ -84,9 +69,6 @@ const MovieRating = () => {
             setMessage('Error connecting to server');
         }
     };
-
-    // if (loading) return <div className="loading">Loading...</div>;
-    // if (error) return <div className="error-message">{error}</div>;
 
     return (
         <div className="movie-rating-container">
