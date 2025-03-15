@@ -5,6 +5,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, curren
 from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
 import os
+from datetime import datetime
 
 from functools import wraps
 
@@ -259,6 +260,153 @@ def get_movie(movie_id):
         return jsonify({"error": "An error occurred while retrieving the movie"}), 500
 
 
+@app.route("/api/groups", methods=["GET"])
+@token_required
+def get_groups():
+    try:
+        # Get all groups
+        groups = list(db.groups.find())
+        
+        # Convert ObjectId to string for JSON serialization
+        all_groups = []
+        for group in groups:
+            formatted_group = {
+                "_id": str(group["_id"]),
+                "name": group["name"],
+                "members": [str(member) for member in group.get("members", [])]
+            }
+            all_groups.append(formatted_group)
+        
+        # Get groups where the current user is a member
+        user_id = str(request.current_user["_id"])
+        user_groups = [group for group in all_groups if user_id in group["members"]]
+        
+        return jsonify({
+            "all_groups": all_groups,
+            "user_groups": user_groups
+        }), 200
+    except Exception as e:
+        print(f"Error getting groups: {str(e)}")
+        return jsonify({"all_groups": [], "user_groups": []}), 500
+
+@app.route("/api/groups", methods=["POST"])
+@token_required
+def create_group():
+    data = request.get_json()
+    group_name = data.get("name")
+    
+    if not group_name:
+        return jsonify({"error": "Group name is required"}), 400
+    
+    try:
+        user_id = ObjectId(request.current_user["_id"])
+        
+        # Create the group with just name and members (creator is automatically a member)
+        group = {
+            "name": group_name,
+            "members": [user_id]  # Creator is automatically a member
+        }
+        
+        result = db.groups.insert_one(group)
+        
+        # Verify the group was created and has the creator as a member
+        created_group = db.groups.find_one({"_id": result.inserted_id})
+        if created_group:
+            return jsonify({
+                "message": "Group created successfully", 
+                "group_id": str(result.inserted_id)
+            }), 201
+        else:
+            return jsonify({"error": "Failed to verify group creation"}), 500
+    except Exception as e:
+        print(f"Error creating group: {str(e)}")
+        return jsonify({"error": "Failed to create group"}), 500
+
+@app.route("/api/groups/join", methods=["POST"])
+@token_required
+def join_group():
+    data = request.get_json()
+    group_id = data.get("group_id")
+    
+    try:
+        user_id = ObjectId(request.current_user["_id"])
+        
+        # Add user to group
+        db.groups.update_one(
+            {"_id": ObjectId(group_id)},
+            {"$addToSet": {"members": user_id}}  # addToSet prevents duplicates
+        )
+        
+        return jsonify({"message": "Joined group"}), 200
+    except Exception as e:
+        return jsonify({"error": "Failed to join group"}), 500
+
+@app.route("/api/groups/leave", methods=["POST"])
+@token_required
+def leave_group():
+    data = request.get_json()
+    group_id = data.get("group_id")
+    
+    try:
+        user_id = ObjectId(request.current_user["_id"])
+        
+        # Remove user from group
+        db.groups.update_one(
+            {"_id": ObjectId(group_id)},
+            {"$pull": {"members": user_id}}
+        )
+        
+        return jsonify({"message": "Left group"}), 200
+    except Exception as e:
+        return jsonify({"error": "Failed to leave group"}), 500
+
+@app.route("/api/group/<group_id>/ratings", methods=["GET"])
+@token_required
+def get_group_ratings(group_id):
+    try:
+        # Check if group exists and user is a member
+        group = db.groups.find_one({"_id": ObjectId(group_id)})
+        if not group:
+            return jsonify({"ratings": []}), 404
+        
+        if "members" not in group:
+            return jsonify({"ratings": []}), 200
+            
+        # Get all ratings from all members
+        all_ratings = []
+        username_cache = {}
+        
+        for member_id in group["members"]:
+            # Get the user's ratings
+            ratings = list(db.ratings.find({"user_id": member_id}))
+            
+            # Get the username
+            if str(member_id) not in username_cache:
+                user = db.users.find_one({"_id": member_id})
+                username_cache[str(member_id)] = user["username"] if user else "Unknown"
+            
+            # Add username to each rating
+            for rating in ratings:
+                rating["_id"] = str(rating["_id"])
+                rating["user_id"] = str(rating["user_id"])
+                rating["username"] = username_cache[str(rating["user_id"])]
+                
+                # Get movie info
+                movie_id = rating.get("movie_id")
+                if movie_id:
+                    movie = db.movies.find_one({"_id": ObjectId(movie_id)})
+                    if movie:
+                        rating["movie"] = {
+                            "_id": str(movie["_id"]),
+                            "title": movie["title"]
+                        }
+                
+                all_ratings.append(rating)
+        
+        return jsonify({"ratings": all_ratings}), 200
+    except Exception as e:
+        print(f"Error getting group ratings: {str(e)}")
+        return jsonify({"ratings": []}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

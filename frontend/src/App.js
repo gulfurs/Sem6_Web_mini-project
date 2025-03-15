@@ -7,6 +7,7 @@ import UserProfile from "./pages/UserProfile";
 import Groups from "./pages/Groups";
 import GroupJoin from "./pages/GroupJoin";
 import MovieRating from "./pages/MovieRating";
+import GroupView from "./pages/GroupView";
 
 import Register from "./components/Register";
 import Login from "./components/login";
@@ -84,6 +85,9 @@ function App() {
             
             <Route path="/movie-rating" element={
               <ProtectedRoute><MovieRating user={user} /></ProtectedRoute>} />
+
+            <Route path="/group/:groupId" element={
+              <ProtectedRoute><GroupView user={user} /></ProtectedRoute>} />
           </Routes>
         </main>
       </div>
