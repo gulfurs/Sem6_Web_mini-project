@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 const Groups = () => {
   const [userGroups, setUserGroups] = useState([]);
   const [groupName, setGroupName] = useState("");
-  const [message, setMessage] = useState("");
   const userId = localStorage.getItem("userId");
 
   // Fetch user's groups
@@ -17,10 +16,6 @@ const Groups = () => {
     .then(res => res.json())
     .then(data => {
       setUserGroups(data.user_groups || []);
-    })
-    .catch(err => {
-      console.error("Error fetching groups:", err);
-      setUserGroups([]);
     });
   };
 
@@ -40,22 +35,11 @@ const Groups = () => {
       },
       body: JSON.stringify({ name: groupName })
     })
-    .then(res => {
-      if (!res.ok) {
-        throw new Error("Failed to create group");
-      }
-      return res.json();
-    })
+    .then(res => res.json())
     .then(() => {
-      setMessage("Group created");
       setGroupName("");
-      
       // Refresh groups after creating
       fetchGroups();
-    })
-    .catch(err => {
-      console.error("Error creating group:", err);
-      setMessage("Failed to create group");
     });
   };
 
@@ -71,29 +55,18 @@ const Groups = () => {
     })
     .then(() => {
       setUserGroups(userGroups.filter(g => g._id !== groupId));
-      setMessage("Left group");
-    })
-    .catch(err => {
-      console.error("Error leaving group:", err);
-      setMessage("Failed to leave group");
     });
   };
 
   return (
     <div>
       <h1>Your Groups</h1>
-      {message && <p>{message}</p>}
 
       <div>
         <h2>Create New Group</h2>
         <form onSubmit={handleCreateGroup}>
-          <input
-            type="text"
-            placeholder="Group Name"
-            value={groupName}
-            onChange={(e) => setGroupName(e.target.value)}
-            required
-          />
+          <input type="text" placeholder="Group Name" value={groupName}
+            onChange={(e) => setGroupName(e.target.value)} required />
           <button type="submit">Create Group</button>
         </form>
       </div>

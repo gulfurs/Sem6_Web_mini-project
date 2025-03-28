@@ -4,7 +4,6 @@ import { useParams, Link } from "react-router-dom";
 const GroupView = () => {
   const [groupRatings, setGroupRatings] = useState([]);
   const [groupInfo, setGroupInfo] = useState(null);
-  const [message, setMessage] = useState("");
   const { groupId } = useParams();
   const userId = localStorage.getItem("userId");
 
@@ -20,9 +19,6 @@ const GroupView = () => {
       if (data.ratings) {
         setGroupRatings(data.ratings);
       }
-    })
-    .catch(() => {
-      setMessage("Failed to load ratings");
     });
 
     // Fetch group info
@@ -37,9 +33,6 @@ const GroupView = () => {
       if (group) {
         setGroupInfo(group);
       }
-    })
-    .catch(() => {
-      setMessage("Failed to load group info");
     });
   }, [groupId, userId]);
 
@@ -56,8 +49,6 @@ const GroupView = () => {
   return (
     <div>
       <h1>{groupInfo ? groupInfo.name : "Group"} Ratings</h1>
-      {message && <p>{message}</p>}
-      
       <div>
         {Object.keys(moviesByTitle).length === 0 ? (
           <p>No rated movies in this group yet.</p>

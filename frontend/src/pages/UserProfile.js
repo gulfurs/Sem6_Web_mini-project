@@ -6,20 +6,16 @@ import "../home.css"
 const UserProfile = () => {
 
   const [ratedMovies, setRatedMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
   const userId = localStorage.getItem("userId");
+  const username = localStorage.getItem("username");
 
   useEffect(() => {
     const fetchUserRatings = async () => {
-      try {
-        const ratingsResponse = await fetch("http://127.0.0.1:5000/api/ratings", {
-          headers: { Authorization: `Bearer ${userId}` },
-        });
-      
-      if (!ratingsResponse.ok) {
-        throw new Error("Failed to fetch ratings");
-      }
+      if (!userId) return;
+      const ratingsResponse = await fetch("http://127.0.0.1:5000/api/ratings", {
+        headers: { Authorization: `Bearer ${userId}` },
+      });
 
       const ratingsData = await ratingsResponse.json();
 
@@ -33,33 +29,22 @@ const UserProfile = () => {
         })
       );
       setRatedMovies(moviesWithRatings.filter((movie) => movie !== null));
-    } catch (err) {
-      setError("Failed to load content. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  if (userId) {
     fetchUserRatings();
-  } else {
-    setLoading(false);
-  }
-}, [userId]);
+  }, [userId]);
 
   return (
     <div className="container">
       <h1>User Profile</h1>
       <p>Your personalized movie recommendations will appear here.</p>
-      <p>Username: {localStorage.getItem("username")}</p>
+      <p>Username: {username}</p>
 
       <div className="user-ratings-section">
         <h2>My Ratings</h2>
-        {loading && <p>Loading...</p>}
-        {error && <p>{error}</p>}
-        {!loading && ratedMovies.length === 0 && <p>No ratings found</p>}
-
-        {ratedMovies.length > 0 && (
+        {ratedMovies.length === 0 ? (
+          <p>No ratings found</p>
+        ) : (
           <div className="movies-grid">
             {ratedMovies.map(movie => (
               <div key={movie._id} className="movie-card">

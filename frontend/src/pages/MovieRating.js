@@ -4,7 +4,7 @@ import "../movieratestyle.css";
 const MovieRating = () => {
     const [movies, setMovies] = useState([]);
     const [userRatings, setUserRatings] = useState({});
-    const [message, setMessage] = useState('');
+
     const userId = localStorage.getItem('userId');
 
     // Fetch both movies and ratings in parallel
@@ -13,36 +13,26 @@ const MovieRating = () => {
         fetch('http://127.0.0.1:5000/api/movies')
             .then(response => response.json())
             .then(data => setMovies(data))
-            .catch(err => console.error('Error fetching movies:', err));
         
         // Fetch user ratings if logged in
         if (userId) {
             fetch('http://127.0.0.1:5000/api/ratings', {
                 headers: { 'Authorization': `Bearer ${userId}` }
             })
-            .then(response => {
-                if (response.ok) return response.json();
-                return { ratings: [] };
-            })
+            .then(response => response.json())
             .then(data => {
                 const ratingsObj = {};
                 data.ratings.forEach(rating => {
                     ratingsObj[rating.movie_id] = rating.rating;
                 });
                 setUserRatings(ratingsObj);
-            })
-            .catch(err => console.error('Error fetching ratings:', err));
+            });
         }
     }, [userId]);
 
     const handleRatingChange = async (movieId, rating) => {
-        if (!userId) {
-            setMessage('You must be logged in to rate movies');
-            return;
-        }
+        if (!userId) {return;}
         
-        setMessage('');
-        try {
             const res = await fetch('http://127.0.0.1:5000/api/rate', {
                 method: 'POST',
                 headers: { 
@@ -52,32 +42,18 @@ const MovieRating = () => {
                 body: JSON.stringify({ movie_id: movieId, rating: parseInt(rating) })
             });
             
-            const data = await res.json();
-            
             if (res.ok) {
                 // Update local state immediately
                 setUserRatings(prev => ({
                     ...prev,
                     [movieId]: parseInt(rating)
                 }));
-                setMessage('Rating saved!');
-                setTimeout(() => setMessage(''), 2000);
-            } else {
-                setMessage(data.error || 'Failed to save rating');
-            }
-        } catch (error) {
-            setMessage('Error connecting to server');
         }
     };
 
     return (
         <div className="movie-rating-container">
             <h2>Rate Movies</h2>
-            {message && (
-                <p className={message.includes('saved') ? 'success-message' : 'error-message'}>
-                    {message}
-                </p>
-            )}
             
             {movies.length === 0 ? (
                 <p>No movies found.</p>

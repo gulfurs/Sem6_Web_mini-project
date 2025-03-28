@@ -4,15 +4,12 @@ import { Link } from "react-router-dom";
 const GroupJoin = () => {
   const [groups, setGroups] = useState([]);
   const [userGroups, setUserGroups] = useState([]);
-  const [message, setMessage] = useState("");
   const userId = localStorage.getItem("userId");
 
   // Fetch all groups
   const fetchGroups = () => {
     fetch("http://127.0.0.1:5000/api/groups", {
-      headers: {
-        Authorization: `Bearer ${userId}`
-      }
+      headers: { Authorization: `Bearer ${userId}`}
     })
     .then(res => res.json())
     .then(data => {
@@ -20,11 +17,6 @@ const GroupJoin = () => {
       setGroups(data.all_groups || []);
       setUserGroups(data.user_groups || []);
     })
-    .catch(err => {
-      console.error("Error fetching groups:", err);
-      setGroups([]);
-      setUserGroups([]);
-    });
   };
 
   useEffect(() => {
@@ -41,21 +33,11 @@ const GroupJoin = () => {
       },
       body: JSON.stringify({ group_id: groupId })
     })
-    .then(res => {
-      if (!res.ok) {
-        throw new Error("Failed to join group");
-      }
-      return res.json();
-    })
+    .then(res => res.json())
     .then(() => {
-      setMessage("Joined group");
       // Refresh groups after joining
       fetchGroups();
     })
-    .catch(err => {
-      console.error("Error joining group:", err);
-      setMessage("Failed to join group");
-    });
   };
 
   // Check if user is already a member of a group
@@ -66,7 +48,6 @@ const GroupJoin = () => {
   return (
     <div>
       <h1>Join a Group</h1>
-      {message && <p>{message}</p>}
 
       <div>
         <h2>Available Groups</h2>

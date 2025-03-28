@@ -4,16 +4,12 @@ import { useNavigate } from "react-router-dom";
 const Register = ({ setUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setMessage("");
 
-    try {
       const response = await fetch("http://127.0.0.1:5000/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -24,20 +20,12 @@ const Register = ({ setUser }) => {
       const data = await response.json();
       
       if (response.ok) {
-        setMessage("Registration successful!");
         setUser(data.user);
         localStorage.setItem('userId', data.user.id);
         localStorage.setItem('username', data.user.username);
         // Redirect to home page after successful registration
-        setTimeout(() => navigate("/"), 1500);
-      } else {
-        setMessage(data.error || "Registration failed");
-      }
-    } catch (error) {
-      setMessage("Error connecting to server");
-    } finally {
-      setIsLoading(false);
-    }
+        navigate("/");
+      } 
   };
 
   return (
@@ -56,11 +44,7 @@ const Register = ({ setUser }) => {
             onChange={(e) => setPassword(e.target.value)} required />
         </div>
         
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "Registering..." : "Register"}
-        </button>
-        
-        {message && <p className={message.includes("successful") ? "success" : "error"}>{message}</p>}
+        <button type="submit">Register</button>
       </form>
     </div>
   );
