@@ -1,53 +1,52 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ setUser }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
-    
+
+    const navigate = useNavigate();
+
     const handleLogin = async (e) => {
         e.preventDefault();
-    
-        try {
-            const response = await fetch('http://127.0.0.1:5000/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+        
+            const res = await fetch("http://127.0.0.1:5000/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),
             });
+    
+            const data = await res.json();
+            
+            if (res.ok) {
+                setUser(data.user);
+                // Store user ID in localStorage
+                localStorage.setItem('userId', data.user.id);
+                localStorage.setItem('username', data.user.username);
+                navigate("/");
+            } 
+    };
 
-        const data = await response.json();
-        if (response.ok) {
-            setMessage("You are logged in!");
-            localStorage.setItem('username', username);
-        } else {
-            setMessage(data.error);
-        }
-    } catch (error) {
-        setMessage('An error occurred.');
-    }
-};
-
-return (
-    <div>
-        <h2>LogIn</h2>
-        <form onSubmit={handleLogin}>
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required />
-            <button type="submit">Login Here</button>
-        </form>
-        {message && <p>{message}</p>}
-    </div>
-);
+    return (
+        <div className="auth-container">
+            <h2>Login</h2>
+            <form onSubmit={handleLogin}>
+                <div className="form-group">
+                    <label htmlFor="username">Username</label>
+                    <input id="username" type="text" value={username} 
+                        onChange={(e) => setUsername(e.target.value)} required/>
+                </div>
+                
+                <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <input id="password" type="password" value={password}
+                        onChange={(e) => setPassword(e.target.value)} required/>
+                </div>
+                
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    );
 };
 
 export default Login;
