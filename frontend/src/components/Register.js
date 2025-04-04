@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../navbarstyle.css";
 
 const Register = ({ setUser }) => {
   const [username, setUsername] = useState("");
@@ -44,7 +45,7 @@ const Register = ({ setUser }) => {
             onChange={(e) => setPassword(e.target.value)} required />
         </div>
         
-        <button type="submit">Register</button>
+        <button type="submit" className="btn">Register</button>
       </form>
     </div>
   );

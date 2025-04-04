@@ -47,7 +47,7 @@ const GroupView = () => {
   });
 
   return (
-    <div>
+    <div className="container">
       <h1>{groupInfo ? groupInfo.name : "Group"} Ratings</h1>
       <div>
         {Object.keys(moviesByTitle).length === 0 ? (
@@ -70,7 +70,7 @@ const GroupView = () => {
         )}
       </div>
       
-      <Link to="/groups">Back to Groups</Link>
+      <Link to="/groups" className="btn-back">Back to Groups</Link>
     </div>
   );
 };

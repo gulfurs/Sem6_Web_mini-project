@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "../navbarstyle.css"
 
 const Groups = () => {
   const [userGroups, setUserGroups] = useState([]);
@@ -59,15 +60,17 @@ const Groups = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Your Groups</h1>
 
       <div>
         <h2>Create New Group</h2>
         <form onSubmit={handleCreateGroup}>
-          <input type="text" placeholder="Group Name" value={groupName}
+          <div className="form-group">
+            <input type="text" placeholder="Group Name" value={groupName}
             onChange={(e) => setGroupName(e.target.value)} required />
-          <button type="submit">Create Group</button>
+            <button type="submit" className="btn">Create Group</button>
+          </div>
         </form>
       </div>
 
@@ -79,9 +82,9 @@ const Groups = () => {
           <ul>
             {userGroups.map((group) => (
               <li key={group._id}>
-                <Link to={`/group/${group._id}`}>{group.name}</Link>
+                <Link to={`/group/${group._id}`} className="group-link">{group.name}</Link>
                 <span> ({(group.members || []).length} members) </span>
-                <button onClick={() => handleLeaveGroup(group._id)}>
+                <button onClick={() => handleLeaveGroup(group._id)} className="logout-btn">
                   Leave
                 </button>
               </li>
@@ -90,7 +93,7 @@ const Groups = () => {
         )}
       </div>
       
-      <Link to="/group-join">Find more groups</Link>
+      <Link to="/group-join" className="btn-back">Find more groups</Link>
     </div>
   );
 };

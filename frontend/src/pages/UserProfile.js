@@ -37,7 +37,7 @@ const UserProfile = () => {
   return (
     <div className="container">
       <h1>User Profile</h1>
-      <p>Your personalized movie recommendations will appear here.</p>
+      <p>Your rated movies</p>
       <p>Username: {username}</p>
 
       <div className="user-ratings-section">
