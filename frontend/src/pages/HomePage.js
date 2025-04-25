@@ -7,9 +7,18 @@ const HomePage = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/movies")
-      .then(response => response.json())
-      .then(data => setMovies(data));
+    // fetch("http://127.0.0.1:5000/api/movies")
+    //   .then(response => response.json())
+    //   .then(data => setMovies(data));
+
+      fetch("https://api.andrespecht.dev/movies")
+        .then(response => response.json())
+        .then(data => {
+          if (data.success && data.response){
+            setMovies(data.response);
+          } 
+        })
+        .catch(error => console.error("Error fetching movies from API:", error));
   }, []);
 
   return (
@@ -28,14 +37,22 @@ const HomePage = () => {
         <Link to="/movie-rating" className="btn">Rate Movies</Link>
       </nav>
   
-      <h2>Movies</h2>
-      <ul>
-        {movies.map(movie =>(
-          <li>key={movie._id}{movie.title}</li>
+      <div className="section-title">
+        <h2>Movies</h2>
+      </div>
+      <div className="movies-grid">
+        {movies.map((movie) => (
+          <div key={movie._id} className="movie-card">
+            <div className="movie-title">{movie.title}</div>
+            <div className="movie-info">
+              {movie.genre && <div>{movie.genre.join(', ')}</div>}
+              {movie.release_year && <div>{movie.release_year}</div>}
+              <div className="movie-description">{movie.description.slice(0, 100)}...</div>
+            </div>
+          </div>
         ))}
-      </ul>
-      <p>Username: {localStorage.getItem("username")}</p>
-    </div>
+      </div>
+  </div>
   );
 };
 
