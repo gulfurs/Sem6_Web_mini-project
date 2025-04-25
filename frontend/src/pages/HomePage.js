@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles.css";
+import "../home.css"
 
 const HomePage = () => {
-  // const [users, setUsers] = useState([]); 
   const [movies, setMovies] = useState([]);
+  const username = localStorage.getItem("username");
 
   useEffect(() => {
     // fetch("http://127.0.0.1:5000/api/movies")
@@ -23,19 +24,11 @@ const HomePage = () => {
 
   return (
     <div className="container">
-      <div className= "top-bar sign-in">
-        <Link to="/login" className="btn">Login</Link>
-        <Link to="/register" className="btn">Register</Link>
+      <div className="hero-section">
+        <h1>Welcome to the Cinematch</h1>
+        <p>Very cool, you can even login ! :O</p>
       </div>
-      <h1>Welcome to the Movie Recommendation Engine</h1>
-      <p>Explore movies, join groups, and get personalized recommendations!</p>
-
-      <nav>
-        <Link to="/user-profile" className="btn">User Profile</Link>
-        <Link to="/groups" className="btn">Groups</Link>
-        <Link to="/group-join" className="btn">Join a Group</Link>
-        <Link to="/movie-rating" className="btn">Rate Movies</Link>
-      </nav>
+      {username && <p className="welcome-message">Welcome back, {username}!</p>}
   
       <div className="section-title">
         <h2>Movies</h2>

@@ -2,26 +2,35 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../navbarstyle.css";
 
-const Register = () => {
+const Register = ({ setUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://127.0.0.1:5000/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+      const response = await fetch("http://127.0.0.1:5000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ username, password }),
+      });
 
-    const data = await response.json();
-    setMessage(data.message || data.error);
+      const data = await response.json();
+      
+      if (response.ok) {
+        setUser(data.user);
+        localStorage.setItem('userId', data.user.id);
+        localStorage.setItem('username', data.user.username);
+        // Redirect to home page after successful registration
+        navigate("/");
+      } 
   };
 
   return (
-    <div>
+    <div className="auth-container">
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
         <div className="form-group">
@@ -38,7 +47,6 @@ const Register = () => {
         
         <button type="submit" className="btn">Register</button>
       </form>
-      {message && <p>{message}</p>}
     </div>
   );
 };

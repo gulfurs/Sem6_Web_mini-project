@@ -3,6 +3,62 @@ import { Link } from "react-router-dom";
 import "../navbarstyle.css"
 
 const Groups = () => {
+  const [userGroups, setUserGroups] = useState([]);
+  const [groupName, setGroupName] = useState("");
+  const userId = localStorage.getItem("userId");
+
+  // Fetch user's groups
+  const fetchGroups = () => {
+    fetch("http://127.0.0.1:5000/api/groups", {
+      headers: {
+        Authorization: `Bearer ${userId}`
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      setUserGroups(data.user_groups || []);
+    });
+  };
+
+  useEffect(() => {
+    fetchGroups();
+  }, [userId]);
+
+  // Create a group
+  const handleCreateGroup = (e) => {
+    e.preventDefault();
+    
+    fetch("http://127.0.0.1:5000/api/groups", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userId}`
+      },
+      body: JSON.stringify({ name: groupName })
+    })
+    .then(res => res.json())
+    .then(() => {
+      setGroupName("");
+      // Refresh groups after creating
+      fetchGroups();
+    });
+  };
+
+  // Leave a group
+  const handleLeaveGroup = (groupId) => {
+    fetch("http://127.0.0.1:5000/api/groups/leave", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userId}`
+      },
+      body: JSON.stringify({ group_id: groupId })
+    })
+    .then(() => {
+      setUserGroups(userGroups.filter(g => g._id !== groupId));
+    });
+  };
+
   return (
     <div className="container">
       <h1>Your Groups</h1>

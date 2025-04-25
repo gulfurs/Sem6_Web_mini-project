@@ -1,7 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../styles.css";
+import "../home.css"
+
 
 const UserProfile = () => {
+
+  const [ratedMovies, setRatedMovies] = useState([]);
+
+  const userId = localStorage.getItem("userId");
+  const username = localStorage.getItem("username");
+
+  useEffect(() => {
+    const fetchUserRatings = async () => {
+      if (!userId) return;
+      const ratingsResponse = await fetch("http://127.0.0.1:5000/api/ratings", {
+        headers: { Authorization: `Bearer ${userId}` },
+      });
+
+      const ratingsData = await ratingsResponse.json();
+
+      const moviesWithRatings = await Promise.all(
+        ratingsData.ratings.map(async (rating) => {
+          const movieResponse = await fetch(`http://127.0.0.1:5000/api/movies/${rating.movie_id}`);
+          if (movieResponse.ok) {
+            const movieData = await movieResponse.json();
+            return { ...movieData, userRating: rating.rating };
+          } return null;
+        })
+      );
+      setRatedMovies(moviesWithRatings.filter((movie) => movie !== null));
+    };
+
+    fetchUserRatings();
+  }, [userId]);
+
   return (
     <div className="container">
       <h1>User Profile</h1>

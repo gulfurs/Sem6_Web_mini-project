@@ -2,20 +2,31 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../navbarstyle.css";
 
-const Login = () => {
+const Login = ({ setUser }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
-    
+
+    const navigate = useNavigate();
+
     const handleLogin = async (e) => {
         e.preventDefault();
-    
-        try {
-            const response = await fetch('http://127.0.0.1:5000/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+        
+            const res = await fetch("http://127.0.0.1:5000/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),
             });
+    
+            const data = await res.json();
+            
+            if (res.ok) {
+                setUser(data.user);
+                // Store user ID in localStorage
+                localStorage.setItem('userId', data.user.id);
+                localStorage.setItem('username', data.user.username);
+                navigate("/");
+            } 
+    };
 
     return (
         <div className="auth-container">
