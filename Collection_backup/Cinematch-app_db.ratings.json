@@ -9,4 +9,64 @@
     "$oid": "67a33337fbd651c68312aa52"
   },
   "rating": 5
+},
+{
+  "_id": {
+    "$oid": "67c83e2f1cff3d315cfd6e02"
+  },
+  "user_id": {
+    "$oid": "67c83c0a1cff3d315cfd6e01"
+  },
+  "movie_id": "67a33337fbd651c68312aa52",
+  "rating": 1
+},
+{
+  "_id": {
+    "$oid": "67d183b2753dd320651fee6b"
+  },
+  "user_id": {
+    "$oid": "67d1821e753dd320651fee6a"
+  },
+  "movie_id": "67a33337fbd651c68312aa52",
+  "rating": 1
+},
+{
+  "_id": {
+    "$oid": "67d183b6753dd320651fee6c"
+  },
+  "user_id": {
+    "$oid": "67d1821e753dd320651fee6a"
+  },
+  "movie_id": "67c840f48c11d0f6fa7fa83e",
+  "rating": 1
+},
+{
+  "_id": {
+    "$oid": "67ef95f2dcd83400b0d49e5c"
+  },
+  "user_id": {
+    "$oid": "67ef95eedcd83400b0d49e5b"
+  },
+  "movie_id": "67c840f48c11d0f6fa7fa83e",
+  "rating": 3
+},
+{
+  "_id": {
+    "$oid": "67efa4cedcd83400b0d49e5e"
+  },
+  "user_id": {
+    "$oid": "67c83c0a1cff3d315cfd6e01"
+  },
+  "movie_id": "67c840f48c11d0f6fa7fa83e",
+  "rating": 2
+},
+{
+  "_id": {
+    "$oid": "67f3a7c64b7da288c3c9190a"
+  },
+  "user_id": {
+    "$oid": "67f3a7b44b7da288c3c91909"
+  },
+  "movie_id": "67a33337fbd651c68312aa52",
+  "rating": 4
 }]

@@ -9,4 +9,16 @@
   ],
   "release_year": 2010,
   "description": "A thief who enters the dreams of others to steal secrets."
+},
+{
+  "_id": {
+    "$oid": "67c840f48c11d0f6fa7fa83e"
+  },
+  "title": "Inception_2",
+  "genre": [
+    "Sci-Fi",
+    "Thriller"
+  ],
+  "release_year": 2010,
+  "description": "A thief who enters the dreams of others to steal secrets."
 }]

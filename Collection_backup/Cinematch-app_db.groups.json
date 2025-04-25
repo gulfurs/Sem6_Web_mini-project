@@ -1,22 +1,42 @@
 [{
   "_id": {
-    "$oid": "67a39354fbd651c68312aa6b"
+    "$oid": "67ef9588dcd83400b0d49e5a"
   },
-  "name": "Movie Enthusiasts",
+  "name": "123group",
   "members": [
     {
-      "$oid": "67a334f7fbd651c68312aa57"
+      "$oid": "67c83c0a1cff3d315cfd6e01"
     },
     {
-      "$oid": "67a334f7fbd651c68312aa57"
+      "$oid": "67ef95eedcd83400b0d49e5b"
     }
-  ],
-  "movies": [
+  ]
+},
+{
+  "_id": {
+    "$oid": "67ef9d32dcd83400b0d49e5d"
+  },
+  "name": "weeeee",
+  "members": [
     {
-      "$oid": "67a33337fbd651c68312aa52"
+      "$oid": "67ef95eedcd83400b0d49e5b"
     },
     {
-      "$oid": "67a33337fbd651c68312aa52"
+      "$oid": "67c83c0a1cff3d315cfd6e01"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67efa4f2dcd83400b0d49e5f"
+  },
+  "name": "inception fanboys",
+  "members": [
+    {
+      "$oid": "67c83c0a1cff3d315cfd6e01"
+    },
+    {
+      "$oid": "67f3a7b44b7da288c3c91909"
     }
   ]
 }]

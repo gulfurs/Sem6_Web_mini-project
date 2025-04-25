@@ -1,9 +1,42 @@
 [{
   "_id": {
-    "$oid": "67a334f7fbd651c68312aa57"
+    "$oid": "67b469976bde8682de131e3b"
   },
-  "username": "john_doe",
-  "password": "$2b$12$u4v9aBZmdK9/NM0pE9S9eOq7gEh4jF3c2Jps3r3VnqU0ZweJq2EWi",
-  "email": "john@example.com",
-  "groups": []
+  "username": "test",
+  "password": "scrypt:32768:8:1$ONbsGOtgelBhN3hG$3fe6134790ffcbc2c28544e4995edb850d0cfd412f926a75c104df57519d48efcfb6bc6ec725d26b9b530facdc0bf54c5f68a827fe9b26e25f1c7e6213c32f25"
+},
+{
+  "_id": {
+    "$oid": "67b476e8c38165369ef0da6b"
+  },
+  "username": "test2",
+  "password": "scrypt:32768:8:1$JWyh59YwG78n9KIu$d0af825bc127d87495aced2567f7868e78fd18dfa2adf9c1159a76a5525f675f3d981ee097e1a571d9842d7888c9c605d846bfe263cffeed192ac78757e43127"
+},
+{
+  "_id": {
+    "$oid": "67c83c0a1cff3d315cfd6e01"
+  },
+  "username": "123",
+  "password": "scrypt:32768:8:1$lATyqYy9Cs7weGbL$70b9457cd192e6deef7b7d5d5f63bce0670daf324d897ee20b9a68dc10461f8696a3c001e96df2e7d1b3c52b24a7afc85efe87b0083119de51771e9e2221426b"
+},
+{
+  "_id": {
+    "$oid": "67d1821e753dd320651fee6a"
+  },
+  "username": "Iuelleflækkefar",
+  "password": "scrypt:32768:8:1$9KYpzJ6ywvmo7hKI$1068407d1d1654b3022902674f75672a488d320860a816b37b1e6e039681e052d7f50021b78874600fad165a0f6a8ed0aca6b3029b7d84b3d5b33d320c750251"
+},
+{
+  "_id": {
+    "$oid": "67ef95eedcd83400b0d49e5b"
+  },
+  "username": "123two",
+  "password": "scrypt:32768:8:1$KWWkMYUWlUhbwNFs$c37caadae07d4e90160b8df4c70ddf82765cca77d53eacef00bc03c9507fa5ef7238b8f054c9b2eff5e089af5ff4cbc695f20ef1838a488a627b2501080a1f18"
+},
+{
+  "_id": {
+    "$oid": "67f3a7b44b7da288c3c91909"
+  },
+  "username": "jeppe",
+  "password": "scrypt:32768:8:1$TQfToEVNZHAG0kJo$6dc5817bd5521b83f7d10c32a6b52917fb42176e1692918c1e32e27e381164cf1a5d7dc5357c01573f278b42a5fab52d1223cfad87166d1852dd3fa117bec6c9"
 }]

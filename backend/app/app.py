@@ -6,11 +6,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
 import os
 from datetime import datetime
+from dotenv import load_dotenv
 
 from functools import wraps
 
+
+load_dotenv()
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  
+
+# app.secret_key = 'your_secret_key'  
+app.secret_key = os.getenv("JWT_SECRET_KEY") 
 
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_PERMANENT'] = True
@@ -20,8 +25,12 @@ app.config['SESSION_COOKIE_SECURE'] = False
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 # Connect to MongoDB
-client = MongoClient("mongodb://localhost:27017/")
+MONGO_URI = os.getenv("MONGO_URI")
+client = MongoClient(MONGO_URI)
 db = client["Cinematch-app_db"]
+
+#client = MongoClient("mongodb://localhost:27017/")
+#db = client["Cinematch-app_db"]
 
 # CORS configuration
 CORS(app, 
