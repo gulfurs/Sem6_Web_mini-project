@@ -19,7 +19,7 @@ Welcome to **Cinematch**! 🎉 This is your go-to app for finding the **movie** 
 - **Backend**: Flask 🐍
 - **Database**: MongoDB 🍃
 - **Styling**: CSS 🎨
-- **Movie Data**: Powered by [TMDb](https://www.themoviedb.org/) 🎥
+- **Movie Data**: [Sample Database](https://api.andrespecht.dev/movies) 🎥
 
 ---
 
