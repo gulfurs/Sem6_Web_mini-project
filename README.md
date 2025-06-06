@@ -26,7 +26,8 @@ Welcome to **Cinematch**! 🎉 This is your go-to app for finding the **movie** 
 ## Set up the backend 
 - cd backend
 - pip install -r requirements.txt
-- python run.py
+- cd app
+- python app.py
 
 ## Set up the frontend 
 - cd frontend 
