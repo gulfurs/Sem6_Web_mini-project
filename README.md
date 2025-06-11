@@ -1,5 +1,5 @@
 # 🎬 Cinematch 🍿
-
+[LINK TO GITHUB Sem6_Web_mini-project](https://github.com/gulfurs/Sem6_Web_mini-project/blob/main/README.md)
 Welcome to **Cinematch**! 🎉 This is your go-to app for finding the **movie** 🎥 for your group 🧑‍🤝‍🧑. Whether you're planning a **family movie night** 👨‍👩‍👧‍👦 or a **friends' hangout** 🍕
 
 ---
